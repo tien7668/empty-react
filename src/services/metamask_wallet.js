@@ -2,7 +2,7 @@ import ENV from "../configs/env";
 import Web3 from "web3";
 import rxAccount from "src/rx/rx-account";
 import Web3Service from 'src/services/web3_service'
-import ethers from 'ethers'
+import { ethers } from "ethers"
 export default (state = { ethereum: window.ethereum, web3: new Web3(window.ethereum || Web3.givenProvider || window.web3.currentProvider || window.web3.givenProvider)}) => {
     
     return {

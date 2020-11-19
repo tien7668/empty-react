@@ -1,11 +1,5 @@
-import modalService from "src/services/single_modal_service";
-import WalletConnect from "walletconnect";
-import { useEffect } from "react";
-import Web3Service from "src/services/web3_service";
 import rxAccount from "src/rx/rx-account";
-import ethers from "ethers";
 import walletConnectWallet from "src/services/wallet_connect_wallet";
-window.ethers = ethers
 // const WalletConnectModal = () => {
 //     useEffect(() => {
 //         async function connect() {

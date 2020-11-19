@@ -2,7 +2,7 @@ import modalService from "src/services/single_modal_service";
 import { validatePrivateKey, addressFromPrivateKey } from "src/utils/keys";
 import {useState} from 'react'
 import rxAccount from "src/rx/rx-account";
-import ethers from "ethers" 
+import { ethers } from "ethers" 
 import web3Service from "src/services/web3_service";
 import privateKeyWallet from "src/services/private_key_wallet";
 
