@@ -1,0 +1,13 @@
+- name: Install nginx
+  apt:
+    name: nginx
+    state: latest
+
+- name: copy nginx config file
+  copy:
+    src: "{{ nginx_location }}"
+    dest: /etc/nginx/sites-available/default
+    owner: deploy
+    mode: '0777'
+  notify:
+    - Restart nginx

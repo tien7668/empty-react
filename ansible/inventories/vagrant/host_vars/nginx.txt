@@ -1,0 +1,10 @@
+#http {
+  # include /etc/nginx/conf.d;
+
+  server {
+    listen 80;
+    server_name "_";
+    root /home/deploy/empty-react/build;
+    index index.html;
+  }
+#}

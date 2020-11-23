@@ -1,0 +1,16 @@
+---
+- hosts: cms
+  remote_user: root
+  become: yes
+  vars_files:
+    - inventories/vagrant/host_vars/default.yml
+
+  roles:
+    - common
+    - add_deploy_user
+    - nginx
+    - github_runner
+#    - postgres_vagrant_permission
+    # - ruby
+    # - postgres_db
+    # - cap_setup

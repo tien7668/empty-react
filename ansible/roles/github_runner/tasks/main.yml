@@ -1,0 +1,48 @@
+- name: Creates directory
+  become_user: "{{deploy_user}}"
+  file:
+    path: /home/{{deploy_user}}/{{project_name}}
+    state: directory
+- name: Github action config
+  # run_once: true
+  become_user: "{{deploy_user}}"
+  shell: | 
+    cd /home/{{deploy_user}}/{{project_name}}
+    curl -O -L https://github.com/actions/runner/releases/download/v2.273.5/actions-runner-linux-x64-2.273.5.tar.gz
+    tar xzf ./actions-runner-linux-x64-2.273.5.tar.gz
+
+- name: run config file 
+  ignore_errors: yes
+  expect:
+    chdir: /home/{{deploy_user}}/{{project_name}}
+    command: ./config.sh --url {{github_url}} --token {{github_runner_token}}
+    # remove command: ./config.sh remove --token {{github_runner_token}}
+    responses:
+      runner: "{{project_name}}"
+      label: "{{project_name}}"
+      work_folder: "{{project_name}}"
+  register: hello
+  become: yes
+  become_user: "{{deploy_user}}"
+- debug: msg="{{ hello.stdout }}"
+- name: install runner
+  command: chdir=/home/{{deploy_user}}/{{project_name}} sudo ./svc.sh install
+- name: start runner
+  command: chdir=/home/{{deploy_user}}/{{project_name}} sudo ./svc.sh start
+# - name: Run config
+#   become_user: {{deploy_user}}
+#   ignore_errors: yes
+#   expect:
+#     command: ./config.sh --url https://github.com/tien7668/{{project_name}} --token AIBRXX5JQGAZAWPKEVBFRMS7TEOQC
+#     responses:
+#       runner: "{{project_name}}"
+#       label: "{{project_name}}"
+#       work_folder: "{{project_name}}"
+# - name: Git checkout
+#   git: 
+#     repo: https://github.com/tien7668/{{project_name}}.git
+#     dest: /home/{{deploy_user}}/{{project_name}}
+# - name: Npm install
+#   command: "chdir=/home/{{deploy_user}}/{{project_name}} npm install"
+# - name: Start react
+#   command: "chdir=/home/{{deploy_user}}/{{project_name}} npm start"

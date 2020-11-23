@@ -1,0 +1,60 @@
+- name: Update all packages to the latest version
+  apt:
+    upgrade: yes
+    update_cache: yes
+- name: Importing Postgres's GPG key to apt
+  shell: "wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -"
+- name: Add Postgres repository contents to OS
+  shell: echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" |sudo tee  /etc/apt/sources.list.d/pgdg.list
+- name: Importing Yarn's GPG key to apt
+  shell: "curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -"
+- name: Add Yarn repository contents to OS
+  shell: echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+- name: Install required system packages
+  apt: name={{ item }} state=latest update_cache=yes
+  with_items:
+    - gcc
+    - autoconf
+    - bison
+    - build-essential
+    - libssl-dev
+    - libyaml-dev
+    - libreadline6-dev
+    - zlib1g-dev
+    - libncurses5-dev
+    - libffi-dev
+    - libgdbm3
+    - libgdbm-dev
+    - sqlite3
+    - libsqlite3-dev
+    - nodejs
+    - npm
+    - yarn
+    - imagemagick
+    - libpq-dev
+    - python3
+    - python3-pip
+    - python3-setuptools
+    - postgresql-client-12
+    - postgresql-12
+    - postgresql-contrib-12
+    - ffmpeg
+# - name: Install nodejs 
+#   shell: |
+#     curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | bash
+#     export NVM_DIR="$HOME/.nvm"
+#     [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+#     [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
+#     nvm install 12.19.0
+#     nvm use 12.19.0
+#     n=$(which node);n=${n%/bin/node}; chmod -R 755 $n/bin/*; sudo cp -r $n/{bin,lib,share} /usr/local
+- name: install psycopg2
+  become: yes
+  pip:
+    name: psycopg2
+    executable: pip3
+- name: install pexpect
+  become: yes
+  pip:
+    name: pexpect
+    executable: pip3

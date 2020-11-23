@@ -1,0 +1,13 @@
+- name: Add deploy user
+  user:
+    name: "{{ deploy_user }}"
+    shell: /bin/bash
+    #        run this to get hashed password: openssl passwd -salt SomeSalt -1 deploy
+    password: "{{deploy_password}}"
+- name: set deploy as sudoer
+  command: usermod -aG sudo {{ deploy_user }}
+- name: Add SSH key to server for deploy user
+  authorized_key:
+    user: "{{ deploy_user }}"
+    #        your public key
+    key: "{{deploy_user_pubkey}}"
